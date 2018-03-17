@@ -3,6 +3,8 @@
  */
 package trees;
 
+import javax.xml.stream.events.NotationDeclaration;
+
 import trees.AbstractBinarySearchTree.Node;
 
 /**
@@ -43,8 +45,9 @@ public class AVLTree extends AbstractSelfBalancingBinarySearchTree
 	{
 		node.setBalanceFactor(0);
 		while (node != null) {
-			
+						
 			AVLNode parent = (AVLNode) node.parent;
+			
 			
 			
 			if (parent == null) break;
@@ -57,14 +60,15 @@ public class AVLTree extends AbstractSelfBalancingBinarySearchTree
 			parent.setBalanceFactor(nbf);
 			
 			
-//			if (node.getBalanceFactor() > 1) {
-//			   node = (AVLNode) this.avlRotateRight(node);
-//               break;
-//			} else if (node.getBalanceFactor() < -1) {
-//				node = (AVLNode) this.avlRotateLeft(node);
-//			} else {
-//				updateHeight(node);
-//			}
+			if (parent.getBalanceFactor() > 1) {
+			   parent = (AVLNode) this.avlRotateRight(parent);
+               break;
+			} else if (parent.getBalanceFactor() < -1) {
+				parent = (AVLNode) this.avlRotateLeft(parent);
+				break;
+			} else {
+//				updateBalanceFactor(parent);
+			}
 			
 			node =  parent;
 
@@ -78,7 +82,11 @@ public class AVLTree extends AbstractSelfBalancingBinarySearchTree
      */
     private Node avlRotateLeft(Node node) 
     {
-        return null;
+        Node temp = super.rotateLeft(node);
+        
+        temp.left = updateBalanceFactor((AVLNode)temp.left);
+        temp = updateBalanceFactor((AVLNode)temp);
+        return temp;
     }
  
     /**
@@ -87,7 +95,11 @@ public class AVLTree extends AbstractSelfBalancingBinarySearchTree
      */
     private Node avlRotateRight(Node node) 
     {
-        return null;
+        Node temp = super.rotateRight(node);
+
+        temp.right = updateBalanceFactor((AVLNode)temp.right);
+        temp = updateBalanceFactor((AVLNode)temp);
+        return temp;
     }
 
     /**
@@ -108,9 +120,16 @@ public class AVLTree extends AbstractSelfBalancingBinarySearchTree
     	return null;
     }
     
-    private static final void updateHeight(AVLNode node) 
+    private AVLNode updateBalanceFactor(AVLNode node) 
     {
-    	
+		int leftBalancefactor = (node.left != null) ? 1 : 0;
+		int rightBalancefactor = (node.right != null) ? 1 : 0;
+		
+		int nodeBalanceFactor = leftBalancefactor - rightBalancefactor;
+		int nbf = node.getBalanceFactor() + nodeBalanceFactor;
+		node.setBalanceFactor(nbf);
+		
+		return node;
     }
     
     //-------------------------------- TREE PRINTING ------------------------------------
@@ -149,7 +168,7 @@ public class AVLTree extends AbstractSelfBalancingBinarySearchTree
 		
 		public int getBalanceFactor()
 		{
-			return 0;
+			return this.balanceFactor;
 			
 		}
 	}
