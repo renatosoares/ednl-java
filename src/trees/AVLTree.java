@@ -21,11 +21,13 @@ public class AVLTree extends AbstractSelfBalancingBinarySearchTree
 	 * @see trees.AbstractBinarySearchTree#insert(int)
 	 */
 	@Override
-	public Node insert(int element)
+	public AVLNode insert(int element)
 	{
-		Node newNode = super.insert(element);
+		AVLNode newNode = (AVLNode) super.insert(element);
 
-		rebalance((AVLNode) newNode);
+		newNode.setBalanceFactor(0);
+		
+		rebalance(newNode);
 		return newNode;
 	}
 
@@ -43,22 +45,25 @@ public class AVLTree extends AbstractSelfBalancingBinarySearchTree
 	 */
 	private void rebalance(AVLNode node)
 	{
-		node.setBalanceFactor(0);
+		
 		while (node != null) {
-						
+			
+			if ((AVLNode) node.parent == null) break;
+			
 			AVLNode parent = (AVLNode) node.parent;
 			
-			
-			
-			if (parent == null) break;
-		
-			int leftBalancefactor = (parent.left != null) ? 1 : 0;
+			int leftBalancefactor = (parent.left != null) ? 1 : 0; // FIXME não vai dar certo dessa forma, pois sempre vai deixar a sub com zero
 			int rightBalancefactor = (parent.right != null) ? 1 : 0;
 			
 			int nodeBalanceFactor = leftBalancefactor - rightBalancefactor;
-			int nbf = parent.getBalanceFactor() + nodeBalanceFactor;
-			parent.setBalanceFactor(nbf);
 			
+			int nbf = 0; 
+			
+			if (nodeBalanceFactor != 0) {				
+				nbf = parent.getBalanceFactor() + nodeBalanceFactor;
+			}
+			
+			parent.setBalanceFactor(nbf);
 			
 			if (parent.getBalanceFactor() > 1) {
 			   parent = (AVLNode) this.avlRotateRight(parent);
@@ -66,16 +71,49 @@ public class AVLTree extends AbstractSelfBalancingBinarySearchTree
 			} else if (parent.getBalanceFactor() < -1) {
 				parent = (AVLNode) this.avlRotateLeft(parent);
 				break;
-			} else {
-//				updateBalanceFactor(parent);
 			}
 			
 			node =  parent;
+			if ((AVLNode) node.parent != null)
+				
+				if ( ((AVLNode)node.parent).getBalanceFactor() == 0 && node.getBalanceFactor() == 0) break;
 
+			
 		}
 
 	}
 
+    
+	
+	private Node updateBalanceFactorRotateLeft(Node node)
+	{
+		int nOldB_BF = ((AVLNode) node.left).getBalanceFactor();
+		int nOldA_BF = ((AVLNode) node).getBalanceFactor();
+		
+		int BF_B_new = nOldB_BF + 1 - Math.min(nOldA_BF, 0); 
+		int BF_A_new = nOldA_BF + 1 + Math.max(BF_B_new, 0);
+		
+		((AVLNode) node.left).setBalanceFactor(BF_B_new);
+		((AVLNode) node).setBalanceFactor(BF_A_new);
+		
+		return node;
+	}
+	
+	
+	private Node updateBalanceFactorRotateRight(Node node)
+	{
+		int nOldB_BF = ((AVLNode) node.right).getBalanceFactor();
+		int nOldA_BF = ((AVLNode) node).getBalanceFactor();
+		
+		int BF_B_new = nOldB_BF - 1 - Math.max(nOldA_BF, 0); 
+		int BF_A_new = nOldA_BF - 1 + Math.min(BF_B_new, 0);
+		
+		((AVLNode) node.right).setBalanceFactor(BF_B_new);
+		((AVLNode) node).setBalanceFactor(BF_A_new);
+		
+		return node;
+	}
+	
     /**
      * @param node
      * @return
@@ -84,8 +122,7 @@ public class AVLTree extends AbstractSelfBalancingBinarySearchTree
     {
         Node temp = super.rotateLeft(node);
         
-        temp.left = updateBalanceFactor((AVLNode)temp.left);
-        temp = updateBalanceFactor((AVLNode)temp);
+    	temp = this.updateBalanceFactorRotateLeft(temp);
         return temp;
     }
  
@@ -97,8 +134,7 @@ public class AVLTree extends AbstractSelfBalancingBinarySearchTree
     {
         Node temp = super.rotateRight(node);
 
-        temp.right = updateBalanceFactor((AVLNode)temp.right);
-        temp = updateBalanceFactor((AVLNode)temp);
+        temp = this.updateBalanceFactorRotateRight(temp);
         return temp;
     }
 
@@ -143,7 +179,7 @@ public class AVLTree extends AbstractSelfBalancingBinarySearchTree
         if (node.value == null) {
             System.out.print("<null>");
         } else {
-            System.out.print(node.value.toString() + '-'+ avlNode.getBalanceFactor());
+            System.out.print(node.value.toString() + " <fb> " + avlNode.getBalanceFactor());
         }
         System.out.println();
     }
