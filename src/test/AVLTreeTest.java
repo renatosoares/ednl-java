@@ -14,13 +14,13 @@ public class AVLTreeTest extends BaseBSTTest
     public void testInsert() {
         AVLTree treeAVL = new AVLTree();
         treeAVL.insert(6);
-        treeAVL.printTree();
+//        treeAVL.printTree();
         treeAVL.insert(3);
-        treeAVL.printTree();
+//        treeAVL.printTree();
         treeAVL.insert(8);
-        treeAVL.printTree();
+//        treeAVL.printTree();
         treeAVL.insert(2);
-        treeAVL.printTree();
+//        treeAVL.printTree();
         treeAVL.insert(4);
 //        treeAVL.insert(20);
 //        treeAVL.insert(15);
