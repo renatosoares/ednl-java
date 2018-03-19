@@ -27,14 +27,6 @@ public class AVLTree extends AbstractSelfBalancingBinarySearchTree
 
 		newNode.setBalanceFactor(0);
 		
-//		AVLNode parent = (AVLNode) newNode.parent;
-//		
-//		if (parent.left.value == newNode.value) {
-//			parent.setBalanceFactor(parent.getBalanceFactor() + 1);
-//		} else if (parent.right.value == newNode.value ) {
-//			parent.setBalanceFactor(parent.getBalanceFactor() - 1);
-//		}
-		
 		rebalance(newNode);
 		return newNode;
 	}
@@ -71,7 +63,13 @@ public class AVLTree extends AbstractSelfBalancingBinarySearchTree
 			   parent = (AVLNode) this.avlRotateRight(parent);
                break;
 			} else if (parent.getBalanceFactor() < -1) {
-				parent = (AVLNode) this.avlRotateLeft(parent);
+				
+				if (((AVLNode)parent.right).getBalanceFactor() > 0) {
+					parent.right = (AVLNode) this.avlRotateRight(parent.right);
+					parent = (AVLNode) this.avlRotateLeft(parent);
+				} else {
+					parent = (AVLNode) this.avlRotateLeft(parent);
+				}
 				break;
 			}
 			
@@ -80,15 +78,10 @@ public class AVLTree extends AbstractSelfBalancingBinarySearchTree
 				if ( ((AVLNode)node.parent).getBalanceFactor() == 0 && node.getBalanceFactor() == 0) break;
 			
 			node =  parent;
-
-
-			
 		}
 
 	}
 
-    
-	
 	private Node updateBalanceFactorRotateLeft(Node node)
 	{
 		int nOldB_BF = ((AVLNode) node.left).getBalanceFactor();
