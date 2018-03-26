@@ -29,6 +29,17 @@ public abstract class AbstractBinarySearchTree
 	 */
 	protected abstract Node createNode(int value, Node parent, Node left, Node right);
 	
+	/**
+	 * 
+	 * @param element
+	 * @return
+	 */
+    public Node search(int element) 
+    {
+        // TODO
+    	return null;
+    }
+	
     /**
      * @param element
      * @return
@@ -65,6 +76,28 @@ public abstract class AbstractBinarySearchTree
 
         size++;
         return newNode;
+    }
+    
+    /**
+     * 
+     * @param element
+     * @return
+     */
+    public Node delete(int element) 
+    {
+    	//TODO
+    	return null;
+    }
+    
+    /**
+     * 
+     * @param deleteNode
+     * @return
+     */
+    protected Node delete(Node deleteNode) 
+    {
+    	// TODO
+    	return null;
     }
     
    
