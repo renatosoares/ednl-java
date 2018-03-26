@@ -71,6 +71,19 @@ public class RedBlackTree extends AbstractSelfBalancingBinarySearchTree
              
              if (parent == grandParent.left) {
              
+            	 RedBlackNode uncle = (RedBlackNode) grandParent.right;
+                 // caso 2 - o tio e o pai são rubros
+                 // re-coloração de t(Rubro),u(Negro) e w(Negro)
+                 if (((RedBlackNode) uncle).color == ColorEnum.RED) {
+                     parent.color = ColorEnum.BLACK;
+                     uncle.color = ColorEnum.BLACK;
+                     grandParent.color = ColorEnum.RED;
+                  // O avô foi re-colorido para vermelho, então na próxima iteração verificamos se ele não quebra a propriedade rubro negra
+                     currentNode = grandParent;
+                 } else {
+                	 
+                 }
+            	 
              } else if (parent == grandParent.right) {
                  
             	 RedBlackNode uncle = (RedBlackNode) grandParent.left;
