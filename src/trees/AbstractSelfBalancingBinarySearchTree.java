@@ -8,6 +8,11 @@ package trees;
  */
 public abstract class AbstractSelfBalancingBinarySearchTree extends AbstractBinarySearchTree
 {
+	/**
+	 * 
+	 * @param node
+	 * @return
+	 */
 	protected Node rotateLeft(Node node) 
 	{
         Node temp = node.right;
@@ -21,19 +26,16 @@ public abstract class AbstractSelfBalancingBinarySearchTree extends AbstractBina
         temp.left = node;
         node.parent = temp;
       
-        if (temp.parent != null) {
-            if (node == temp.parent.left) {
-                temp.parent.left = temp;
-            } else {
-                temp.parent.right = temp;
-            }
-        } else {
-            root = temp;
-        }
+        this.rotateConditional(node, temp, null);
         
         return temp;
 	}
 	
+	/**
+	 * 
+	 * @param node
+	 * @return
+	 */
     protected Node rotateRight(Node node) 
     {
         Node temp = node.left;
@@ -47,8 +49,17 @@ public abstract class AbstractSelfBalancingBinarySearchTree extends AbstractBina
         temp.right = node;
         node.parent = temp;
 
-        // temp took over node's place so now its parent should point to temp
-        if (temp.parent != null) {
+        this.rotateConditional(node, temp, null);
+        
+        return temp;
+    }
+    
+    /**
+     * 
+     */
+    protected void rotateConditional(Node node, Node temp, Node n)
+    {
+        if (temp.parent != n) {
             if (node == temp.parent.left) {
                 temp.parent.left = temp;
             } else {
@@ -57,8 +68,6 @@ public abstract class AbstractSelfBalancingBinarySearchTree extends AbstractBina
         } else {
             root = temp;
         }
-        
-        return temp;
     }
 
 }

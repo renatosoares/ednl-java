@@ -14,14 +14,14 @@ public class RedBlackTreeTest
 
 	    tree.insert(30);
 	    tree.insert(13);
-	    tree.insert(53);
+//	    tree.insert(53);
 	    tree.insert(8); 
-	    tree.insert(23);
-	    tree.insert(43); 
-	    tree.insert(83);
-	    tree.insert(63); 
-	    tree.insert(93); 
-	    tree.insert(96);
+//	    tree.insert(23);
+//	    tree.insert(43); 
+//	    tree.insert(83);
+//	    tree.insert(63); 
+//	    tree.insert(93); 
+//	    tree.insert(96);
 	    
 	    tree.printTree();
 	}
