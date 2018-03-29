@@ -1,4 +1,4 @@
-package test;
+package trees;
 
 import trees.AVLTree;
 import org.junit.Assert;

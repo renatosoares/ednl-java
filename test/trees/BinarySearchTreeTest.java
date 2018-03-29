@@ -1,4 +1,4 @@
-package test;
+package trees;
 
 import org.junit.Assert;
 import org.junit.Test;

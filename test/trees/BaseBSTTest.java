@@ -1,7 +1,7 @@
 /**
  * 
  */
-package test;
+package trees;
 
 import trees.AbstractBinarySearchTree.Node;
 //import org.junit.Assert;

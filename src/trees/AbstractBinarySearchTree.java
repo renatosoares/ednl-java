@@ -36,8 +36,18 @@ public abstract class AbstractBinarySearchTree
 	 */
     public Node search(int element) 
     {
-        // TODO
-    	return null;
+        Node node = root;
+        
+        while (node != null && node.value != null && node.value != element) {
+            
+        	if (element < node.value) {
+                node = node.left;
+            } else {
+                node = node.right;
+            }
+        }
+        
+        return node;
     }
 	
     /**
