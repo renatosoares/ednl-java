@@ -49,5 +49,82 @@ public class RedBlackTreeTest
 	    tree.printTree();
 	}
 	
+    /**
+     * 
+     */
+    @Test
+    public void testSimpleDelete() 
+    {
+        RedBlackTree tree = new RedBlackTree();
+        
+        tree.insert(20);
+        tree.insert(15);
+        tree.insert(25);
+        tree.insert(23);
+        
+        Assert.assertEquals(((RedBlackNode)tree.root).color, ColorEnum.BLACK);
+        Assert.assertEquals(tree.size, 4);
+        
+        tree.delete(15);
+//        
+        Assert.assertEquals(tree.size, 3);
+//        Assert.assertEquals(tree.root.value, (Integer)23); 
+        
+        testTreeBSTProperties(tree.root);
+        tree.printTree();
+    }
+    
+    /**
+     * 
+     */
+    @Test
+    public void testDelete() 
+    {
+        RedBlackTree tree = new RedBlackTree();
+        
+        tree.insert(20);
+        tree.insert(15);
+        tree.insert(25);
+        tree.insert(23);
+        tree.insert(27);
+        
+        Assert.assertEquals(((RedBlackNode)tree.root).color, ColorEnum.BLACK);
+        Assert.assertEquals(tree.size, 5);
+        Assert.assertEquals(tree.root.right.value, (Integer)25);
+        Assert.assertEquals(tree.root.right.left.value, (Integer)23);
+        Assert.assertEquals(((RedBlackNode)tree.root.right.left).color, ColorEnum.RED);
+        
+        tree.delete(25);
+        
+        Assert.assertEquals(tree.size, 4);
+        Assert.assertEquals(tree.root.value, (Integer)20);
+        Assert.assertEquals(tree.root.right.value, (Integer)27);
+        Assert.assertEquals(((RedBlackNode)tree.root.right).color, ColorEnum.BLACK);
+        Assert.assertEquals(tree.root.right.right.value, null);
+        Assert.assertEquals(tree.root.right.left.value, (Integer)23);
+        Assert.assertEquals(((RedBlackNode)tree.root.right.left).color, ColorEnum.RED);
+        
+        testTreeBSTProperties(tree.root);
+    }
+
+    
+    /**
+     * 
+     */
+    private void testTreeBSTProperties(Node entry) 
+    {
+        if (entry != RedBlackTree.nilNode) {
+            
+            if (entry.left != RedBlackTree.nilNode) {
+                Assert.assertTrue(entry.value >= entry.left.value);
+            }
+            if (entry.right != RedBlackTree.nilNode) {
+                Assert.assertTrue(entry.value <= entry.right.value);
+            }
+            testTreeBSTProperties(entry.left);
+            testTreeBSTProperties(entry.right);
+        }
+    }
+	
     
 }
