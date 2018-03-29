@@ -95,8 +95,12 @@ public abstract class AbstractBinarySearchTree
      */
     public Node delete(int element) 
     {
-    	//TODO
-    	return null;
+        Node deleteNode = search(element);
+        if (deleteNode != null) {
+            return delete(deleteNode);
+        } else {
+            return null;
+        }
     }
     
     /**
@@ -106,24 +110,111 @@ public abstract class AbstractBinarySearchTree
      */
     protected Node delete(Node deleteNode) 
     {
-    	// TODO
-    	return null;
+        if (deleteNode != null) {
+        	
+            Node nodeToReturn = null;
+            
+            if (deleteNode != null) {
+            	
+                if (deleteNode.left == null) {
+                    nodeToReturn = transplant(deleteNode, deleteNode.right); 
+                } else if (deleteNode.right == null) {
+                    nodeToReturn = transplant(deleteNode, deleteNode.left); 
+                } else {
+                    Node successorNode = getMinimum(deleteNode.right);
+                    
+                    if (successorNode.parent != deleteNode) {
+                        transplant(successorNode, successorNode.right);
+                        successorNode.right = deleteNode.right;
+                        successorNode.right.parent = successorNode;
+                    }
+                    
+                    transplant(deleteNode, successorNode);
+                    successorNode.left = deleteNode.left;
+                    successorNode.left.parent = successorNode;
+                    nodeToReturn = successorNode;
+                }
+                size--;
+            }
+    
+            return nodeToReturn;
+        }
+        return null;
+    }
+    
+    /**
+     * 
+     * @param nodeToReplace
+     * @param newNode
+     * @return
+     */
+    private Node transplant(Node nodeToReplace, Node newNode) 
+    {
+        if (nodeToReplace.parent == null) {
+            this.root = newNode; 
+        } else if (nodeToReplace == nodeToReplace.parent.left) {
+            nodeToReplace.parent.left = newNode; 
+        } else {
+            nodeToReplace.parent.right = newNode; 
+        }
+        
+        if (newNode != null) {
+            newNode.parent = nodeToReplace.parent; 
+        }
+        
+        return newNode;
+    }
+    
+    /**
+     * 
+     * @param element
+     * @return
+     */
+    public boolean contains(int element) 
+    {
+        return search(element) != null;
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    public int getMinimum() 
+    {
+        return getMinimum(root).value;
     }
     
    
+    /*-------------------PRIVATE HELPER METHODS-------------------*/
+    
+    /**
+     * 
+     * @param node
+     * @return
+     */
+    protected Node getMinimum(Node node) 
+    {
+        while (node.left != null) {
+            node = node.left;
+        }
+        return node;
+    }
+    
     //-------------------------------- TREE PRINTING ------------------------------------
 
     /**
      * 
      */
-    public void printTree() {
+    public void printTree() 
+    {
         printSubtree(root);
     }
     
     /**
      * @param node
      */
-    public void printSubtree(Node node) {
+    public void printSubtree(Node node) 
+    {
         if (node.right != null) {
             printTree(node.right, true, "");
         }
@@ -136,7 +227,8 @@ public abstract class AbstractBinarySearchTree
     /**
      * @param node
      */
-    protected void printNodeValue(Node node) {
+    protected void printNodeValue(Node node) 
+    {
         if (node.value == null) {
             System.out.print("<null>");
         } else {
