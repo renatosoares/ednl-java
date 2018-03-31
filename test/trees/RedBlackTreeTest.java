@@ -53,60 +53,59 @@ public class RedBlackTreeTest
      * 
      */
     @Test
-    public void testSimpleDelete() 
+    public void testSituation1Delete() 
     {
         RedBlackTree tree = new RedBlackTree();
         
-        tree.insert(20);
-        tree.insert(15);
-        tree.insert(25);
-        tree.insert(23);
+        tree.insert(7);
+        tree.insert(2);
+        tree.insert(10);
+        tree.insert(11);
+        tree.insert(1);
+        tree.insert(5);
+        tree.insert(4);
+        
+        tree.printTree();
         
         Assert.assertEquals(((RedBlackNode)tree.root).color, ColorEnum.BLACK);
-        Assert.assertEquals(tree.size, 4);
         
-        tree.delete(15);
-//        
-        Assert.assertEquals(tree.size, 3);
-//        Assert.assertEquals(tree.root.value, (Integer)23); 
+        tree.delete(2);
+
+        Assert.assertEquals(tree.root.value, (Integer)7); 
+        
+        Assert.assertEquals(((RedBlackNode)tree.search(4)).color, ColorEnum.RED);
+        Assert.assertEquals(((RedBlackNode)tree.search(5)).color, ColorEnum.BLACK);
         
         testTreeBSTProperties(tree.root);
         tree.printTree();
     }
     
+	
     /**
      * 
      */
     @Test
-    public void testDelete() 
+    public void testSituation2Delete() 
     {
         RedBlackTree tree = new RedBlackTree();
         
-        tree.insert(20);
-        tree.insert(15);
-        tree.insert(25);
-        tree.insert(23);
-        tree.insert(27);
+        tree.insert(7);
+        tree.insert(2);
+        tree.insert(10);
+        tree.insert(11);
+        tree.insert(1);
+        tree.insert(5);
         
-        Assert.assertEquals(((RedBlackNode)tree.root).color, ColorEnum.BLACK);
-        Assert.assertEquals(tree.size, 5);
-        Assert.assertEquals(tree.root.right.value, (Integer)25);
-        Assert.assertEquals(tree.root.right.left.value, (Integer)23);
-        Assert.assertEquals(((RedBlackNode)tree.root.right.left).color, ColorEnum.RED);
+        tree.printTree();
         
-        tree.delete(25);
+        Assert.assertEquals(((RedBlackNode)tree.search(5)).color, ColorEnum.RED);
         
-        Assert.assertEquals(tree.size, 4);
-        Assert.assertEquals(tree.root.value, (Integer)20);
-        Assert.assertEquals(tree.root.right.value, (Integer)27);
-        Assert.assertEquals(((RedBlackNode)tree.root.right).color, ColorEnum.BLACK);
-        Assert.assertEquals(tree.root.right.right.value, null);
-        Assert.assertEquals(tree.root.right.left.value, (Integer)23);
-        Assert.assertEquals(((RedBlackNode)tree.root.right.left).color, ColorEnum.RED);
-        
-        testTreeBSTProperties(tree.root);
+        tree.delete(2);
+         
+        Assert.assertEquals(((RedBlackNode)tree.search(7)).color, ColorEnum.BLACK);
+ 
+        tree.printTree();
     }
-
     
     /**
      * 

@@ -54,43 +54,43 @@ public class RedBlackTree extends AbstractSelfBalancingBinarySearchTree
         Node replaceNode = null;
         
         if (deleteNode != null && deleteNode != nilNode) {
-            Node removedOrMovedNode = deleteNode;
-            ColorEnum removedOrMovedNodeColor = ((RedBlackNode)removedOrMovedNode).color;
+        	
+            Node successorNode = deleteNode;
+            ColorEnum successorNodeColor = ((RedBlackNode)successorNode).color;
         
             if (deleteNode.left == nilNode) {
-                replaceNode = deleteNode.right;
-                rbTreeTransplant(deleteNode, deleteNode.right);
-                
+            	// TODO
             } else if (deleteNode.right == nilNode) {
-                replaceNode = deleteNode.left;
-                rbTreeTransplant(deleteNode, deleteNode.left);
-                
-            } else {
-                removedOrMovedNode = getMinimum(deleteNode.right);
-                removedOrMovedNodeColor = ((RedBlackNode)removedOrMovedNode).color;
-                replaceNode = removedOrMovedNode.right;
-                
-                if (removedOrMovedNode.parent == deleteNode) {
-                    replaceNode.parent = removedOrMovedNode;
-                } else {
-                    rbTreeTransplant(removedOrMovedNode, removedOrMovedNode.right);
-                    removedOrMovedNode.right = deleteNode.right;
-                    removedOrMovedNode.right.parent = removedOrMovedNode;
+            	// TODO
+            } else { 
+            	successorNode = getMinimum(deleteNode.right);
+            	successorNodeColor = ((RedBlackNode)successorNode).color;
+            	
+            	replaceNode = successorNode;
+
+                if (((RedBlackNode)deleteNode).color == ColorEnum.RED && successorNodeColor == ColorEnum.RED) {
+                	// situação 1
+                	rbTreeTransplant(successorNode, successorNode.right);
+                	
+                	successorNode.right = deleteNode.right;
+                	successorNode.right.parent = successorNode;
+                	
+                    rbTreeTransplant(deleteNode, successorNode);
+                    successorNode.left = deleteNode.left;
+                    successorNode.left.parent = successorNode;
+                } else if (((RedBlackNode)deleteNode).color == ColorEnum.BLACK && successorNodeColor == ColorEnum.RED) {
+                	// situação 2
+                	((RedBlackNode)successorNode).color = ColorEnum.BLACK;
+
+                	rbTreeTransplant(deleteNode, successorNode);
+                	successorNode.left = deleteNode.left;
+                    successorNode.left.parent = successorNode;
+                	
                 }
-                
-                rbTreeTransplant(deleteNode, removedOrMovedNode);
-                removedOrMovedNode.left = deleteNode.left;
-                removedOrMovedNode.left.parent = removedOrMovedNode;
-                ((RedBlackNode)removedOrMovedNode).color = ((RedBlackNode)deleteNode).color;
             }
-            
-            size--;
-            
-            if (removedOrMovedNodeColor == ColorEnum.BLACK) {
-                deleteRBFixup((RedBlackNode)replaceNode);
-            }
+            size--; 
         }
-        
+ 
         return replaceNode;
     }
     
@@ -156,76 +156,7 @@ public class RedBlackTree extends AbstractSelfBalancingBinarySearchTree
 	 */
     private void deleteRBFixup(RedBlackNode x) 
     {
-        while (x != root && isBlack(x)) {
-            
-            if (x == x.parent.left) {
-                RedBlackNode w = (RedBlackNode)x.parent.right;
-                
-                if (isRed(w)) { 
-                    w.color = ColorEnum.BLACK;
-                    ((RedBlackNode)x.parent).color = ColorEnum.RED;
-                    rotateLeft(x.parent);
-                    w = (RedBlackNode)x.parent.right;
-                }
-
-                if (isBlack(w.left) && isBlack(w.right)) {
-                    w.color = ColorEnum.RED;
-                    x = (RedBlackNode)x.parent;
-                    
-                } else if (w != nilNode) {
-                	
-                    if (isBlack(w.right)) {
-                        ((RedBlackNode)w.left).color = ColorEnum.BLACK;
-                        w.color = ColorEnum.RED;
-                        rotateRight(w);
-                        w = (RedBlackNode)x.parent.right;
-                    }
-                    
-                    w.color = ((RedBlackNode)x.parent).color;
-                    ((RedBlackNode)x.parent).color = ColorEnum.BLACK;
-                    ((RedBlackNode)w.right).color = ColorEnum.BLACK;
-                    rotateLeft(x.parent);
-                    x = (RedBlackNode)root;
-                } else {
-                    x.color = ColorEnum.BLACK;
-                    x = (RedBlackNode)x.parent;
-                }
-            } else {
-                RedBlackNode w = (RedBlackNode)x.parent.left;
-                
-                if (isRed(w)) {
-                    w.color = ColorEnum.BLACK;
-                    ((RedBlackNode)x.parent).color = ColorEnum.RED;
-                    rotateRight(x.parent);
-                    w = (RedBlackNode)x.parent.left;
-                }
-                
-                if (isBlack(w.left) && isBlack(w.right)) {
-                    w.color = ColorEnum.RED;
-                    x = (RedBlackNode)x.parent;
-                } else if (w != nilNode) {
-                	
-                    if (isBlack(w.left)) {
-                        ((RedBlackNode)w.right).color = ColorEnum.BLACK;
-                        w.color = ColorEnum.RED;
-                        rotateLeft(w);
-                        w = (RedBlackNode)x.parent.left;
-                    }
-                    
-                    w.color = ((RedBlackNode)x.parent).color;
-                    ((RedBlackNode)x.parent).color = ColorEnum.BLACK;
-                    ((RedBlackNode)w.left).color = ColorEnum.BLACK;
-                    rotateRight(x.parent);
-                    x = (RedBlackNode)root;
-                    
-                } else {
-                	
-                    x.color = ColorEnum.BLACK;
-                    x = (RedBlackNode)x.parent;
-                }
-            }
-            
-        }
+        // TODO
     }
     
     /**

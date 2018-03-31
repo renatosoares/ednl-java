@@ -19,7 +19,7 @@ public class BinarySearchTreeTest extends BaseBSTTest
         Assert.assertTrue(tree.contains(16));
         Assert.assertTrue(tree.contains(1));
         Assert.assertFalse(tree.contains(9));
-        
+        tree.printTree();
         tree.delete(16);
         tree.delete(1);
         
